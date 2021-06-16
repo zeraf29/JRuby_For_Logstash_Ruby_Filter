@@ -15,18 +15,18 @@
 
 def register(params)
     #total event count(how many event values to one string
-    MAX_RUN = params["max_run"]
-    TARGET_EVENT = params["target_event"]
+    @maxRun = params["max_run"]
+    @targetEvent = params["target_event"]
     @combinedString = ''
     @runCount = 0 #check now running count 
 end
 
 def filter(event)
-    if !event.get(TARGET_EVENT).nil? && event.get(TARGET_EVENT)!=''
-        @combinedString += (@combinedString != '' ? ',' : '') + event.get(TARGET_EVENT)
+    if !event.get(@targetEvent).nil? && event.get(@targetEvent)!=''
+        @combinedString += (@combinedString != '' ? ',' : '') + event.get(@targetEvent)
     end
     @runCount += 1
-    if MAX_RUN == @runCount
+    if @maxRun == @runCount
         event.set('combined_string', @combinedString)
     end
     @runCount = 0
