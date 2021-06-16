@@ -56,13 +56,17 @@ def filter(event)
         logger.info("Query: "+query)
         rs = stmt.executeUpdate(query)
         logger.info("Execute Update - return: "+rs.to_s)
-    rescue Exception => e
+    rescue StandardError,Exception => e
         conn.close()
         logger.error("JDBC ExecuteUpdate got Exception.: {"+e.class+"}"+e.message)
     ensure
-        stmt.close
-        conn.close()
-        logger.info("JDBC ExecuteUpdate Run Complete")
+        begin
+            stmt.close
+            conn.close()
+            logger.info("JDBC ExecuteUpdate Run Complete")
+        rescue StandardError, Exception => e
+            logger.error("Jdbvc ExecuteUpdate Connection Close error!")
+        end
     end
     return [event]
 end
